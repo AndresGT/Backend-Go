@@ -1,0 +1,27 @@
+# Archivos de configuración sensibles
+.env
+
+# Archivos binarios generados por Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Carpetas generadas
+/vendor/            
+/bin/              
+/dist/
+*.log
+
+# IDEs y editores comunes
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
