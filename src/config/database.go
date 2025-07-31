@@ -2,10 +2,9 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 
-	"backend-go/src/models" // 👈 Agrega esta línea para importar el modelo
+	"backend-go/src/models"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -14,12 +13,13 @@ import (
 
 var DB *gorm.DB
 
-func ConectarBaseDeDatos() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error cargando .env: %v", err)
+func ConectarBaseDeDatos() error {
+	// Cargar .env
+	if err := godotenv.Load(); err != nil {
+		return fmt.Errorf("error cargando .env: %w", err)
 	}
 
+	// Configuración desde variables de entorno
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
@@ -31,20 +31,20 @@ func ConectarBaseDeDatos() {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Error al conectar a la base de datos: %v", err)
+		return fmt.Errorf("error al conectar a la base de datos: %w", err)
 	}
 
 	DB = db
-	fmt.Println("✅ Conexión exitosa a la base de datos PostgreSQL")
 
-	// 👇 Crea el esquema si no existe
+	// Crear esquema
 	if err := DB.Exec("CREATE SCHEMA IF NOT EXISTS private").Error; err != nil {
-		log.Fatalf("❌ Error creando esquema 'private': %v", err)
+		return fmt.Errorf("error creando esquema 'private': %w", err)
 	}
 
-	// 👇 Ejecuta la migración automática
-	err = db.AutoMigrate(&models.AuthUser{})
-	if err != nil {
-		log.Fatalf("❌ Error al migrar modelos: %v", err)
+	// Migraciones
+	if err := DB.AutoMigrate(&models.AuthUser{}); err != nil {
+		return fmt.Errorf("error al migrar modelos: %w", err)
 	}
+
+	return nil
 }

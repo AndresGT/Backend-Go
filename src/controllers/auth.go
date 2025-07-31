@@ -132,3 +132,25 @@ func Login(c *gin.Context) {
 		"token":   tokenString,
 	})
 }
+
+func GetMe(c *gin.Context) {
+	// Obtener el user_id del token (middleware ya debe haberlo verificado y seteado en el contexto)
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuario no autenticado"})
+		return
+	}
+
+	var user models.AuthUser
+	if err := config.DB.First(&user, "id = ?", userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Usuario no encontrado"})
+		return
+	}
+
+	// Devuelve los datos del usuario sin la contraseña
+	c.JSON(http.StatusOK, gin.H{
+		"id":    user.ID,
+		"email": user.Email,
+	})
+}
+
