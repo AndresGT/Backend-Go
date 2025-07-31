@@ -63,7 +63,7 @@ Proyecto backend escrito en Go (Golang), diseñado con una arquitectura modular 
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/backend-go.git
+   git clone https://github.com/tu-usuario/Backend-Go.git
    cd backend-go
    ```
 
@@ -120,7 +120,7 @@ docker run -p 8080:8080 backend-go
 
 **AndresGT**  
 🌐 [dvandresgt.lat](https://dvandresgt.lat)  
-📧 andres@dvandresgt.lat
+📧 diegogiraldo506@gmail.com
 
 ---
 
