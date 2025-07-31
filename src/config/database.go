@@ -37,6 +37,11 @@ func ConectarBaseDeDatos() {
 	DB = db
 	fmt.Println("✅ Conexión exitosa a la base de datos PostgreSQL")
 
+	// 👇 Crea el esquema si no existe
+	if err := DB.Exec("CREATE SCHEMA IF NOT EXISTS private").Error; err != nil {
+		log.Fatalf("❌ Error creando esquema 'private': %v", err)
+	}
+
 	// 👇 Ejecuta la migración automática
 	err = db.AutoMigrate(&models.AuthUser{})
 	if err != nil {
